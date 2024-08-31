@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Products from "./pages/Products";
-
+import Products2 from "./pages/Products2";
 function App() {
   const data = {
     Books: [
@@ -17,8 +17,9 @@ function App() {
   };
 
   const [status, setStatus] = useState(false);
+  const [status2, setStatus2] = useState(false);
   const modalRef = useRef(null);
-
+  const modalRef2 = useRef(null);
   const openBook = (id) => {
     console.log(id);
 
@@ -59,31 +60,42 @@ function App() {
       );
     };
   }, [status]);
+  const [which, setWich] = useState()
+  useEffect(() => {
+    window.addEventListener('message', function (event) {
+      console.log("Message received from the parent: " + event.data);
+      setWich(event.data)
+      // Message received from parent
+      // if (event.data === 1) {
+      //   setWich(1)
+      // }
 
 
+
+    })
+  }, [])
 
   return (
     <div className="container">
 
-      {/* {data.Books.map((item) => (
-        <div className="content" onClick={() => openBook(item._id)}>
-          <img src={item.url} className="bookCover" />
-          <p key={item._id}>
-            {item.title}
-          </p>
-        </div>
-              
-            ))} */}
+ 
+      <div className="modal-overlay">
 
-      {/* {status && ( */}
-        <div className="modal-overlay">
+        {which === 1 ? (
           <div className="modal-content" ref={modalRef}>
-            <Products setStatus={setStatus} />
+            <Products />
           </div>
-        </div>
-      {/* )} */}
+        ) : (
+          <div className="modal-content" ref={modalRef2}>
+            <Products2 />
+          </div>
+        )
 
-      {/* <div className="bookshelf"></div> */}
+        }
+      </div>
+
+
+
     </div>
   );
 }
